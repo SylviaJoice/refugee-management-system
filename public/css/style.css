@@ -1,0 +1,56 @@
+:root {
+  --sidebar-width: 240px;
+}
+body {
+  min-height: 100vh;
+  background: #f4f7fb;
+  font-family: "Inter", system-ui, sans-serif;
+}
+.app-body {
+  display: flex;
+}
+.sidebar {
+  width: var(--sidebar-width);
+  min-height: calc(100vh - 72px);
+}
+.content {
+  width: calc(100% - var(--sidebar-width));
+  padding-bottom: 40px;
+}
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.card-stats {
+  border: none;
+}
+.login-page {
+  background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
+}
+.login-page .card {
+  border: none;
+}
+.login-page .card-title {
+  color: #333;
+}
+.alert {
+  margin-bottom: 1rem;
+}
+.table-responsive {
+  background: #fff;
+  border-radius: .75rem;
+  padding: 1rem;
+}
+header.topbar h5 {
+  margin: 0;
+}
+@media (max-width: 992px) {
+  .app-body {
+    flex-direction: column;
+  }
+  .sidebar,
+  .content {
+    width: 100%;
+  }
+}

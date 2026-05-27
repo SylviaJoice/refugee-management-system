@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body class="bg-light">
+    <%- include('partials/header') %>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 px-0">
+          <%- include('partials/sidebar') %>
+        </div>
+        <div class="col-md-10 px-4 py-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0 text-dark">
+              <i class="fas fa-building me-2 text-success"></i>Shelters Management
+            </h1>
+            <a href="/shelters/add" class="btn btn-success">
+              <i class="fas fa-plus me-2"></i>Add New Shelter
+            </a>
+          </div>
+
+          <%- include('partials/messages') %>
+
+          <!-- Search and Filter -->
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+              <form class="row g-3" method="get">
+                <div class="col-md-8">
+                  <label for="search" class="form-label">Search Shelters</label>
+                  <input type="text" name="search" id="search" class="form-control"
+                         placeholder="Search by shelter name or location..." value="<%= search || '' %>">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">&nbsp;</label>
+                  <div class="d-grid">
+                    <button type="submit" class="btn btn-outline-success">
+                      <i class="fas fa-search me-2"></i>Search
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Shelters Table -->
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+              <h5 class="mb-0">
+                <i class="fas fa-list me-2 text-success"></i>Shelters List
+                <span class="badge bg-success ms-2"><%= shelters ? shelters.length : 0 %> Records</span>
+              </h5>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th class="border-0 fw-semibold px-4 py-3">Shelter Name</th>
+                      <th class="border-0 fw-semibold px-4 py-3">Location</th>
+                      <th class="border-0 fw-semibold px-4 py-3">Capacity</th>
+                      <th class="border-0 fw-semibold px-4 py-3">Available Slots</th>
+                      <th class="border-0 fw-semibold px-4 py-3">Occupancy</th>
+                      <th class="border-0 fw-semibold px-4 py-3 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if (shelters && shelters.length > 0) { %>
+                      <% shelters.forEach((shelter) => { %>
+                        <% const occupancyRate = shelter.capacity > 0 ? Math.round(((shelter.capacity - shelter.available_slots) / shelter.capacity) * 100) : 0; %>
+                        <tr>
+                          <td class="px-4 py-3">
+                            <div class="d-flex align-items-center">
+                              <div class="bg-success bg-opacity-10 p-2 rounded-circle me-3">
+                                <i class="fas fa-building text-success"></i>
+                              </div>
+                              <div>
+                                <div class="fw-semibold"><%= shelter.shelter_name %></div>
+                                <small class="text-muted">ID: <%= shelter.shelter_id %></small>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="px-4 py-3">
+                            <i class="fas fa-map-marker-alt text-muted me-2"></i>
+                            <%= shelter.location %>
+                          </td>
+                          <td class="px-4 py-3">
+                            <span class="badge bg-primary"><%= shelter.capacity %></span>
+                          </td>
+                          <td class="px-4 py-3">
+                            <span class="badge bg-<%= shelter.available_slots > 0 ? 'success' : 'warning' %>">
+                              <%= shelter.available_slots %>
+                            </span>
+                          </td>
+                          <td class="px-4 py-3">
+                            <div class="d-flex align-items-center">
+                              <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                <div class="progress-bar bg-<%= occupancyRate > 80 ? 'danger' : occupancyRate > 60 ? 'warning' : 'success' %>"
+                                     style="width: <%= occupancyRate %>%"></div>
+                              </div>
+                              <small class="text-muted"><%= occupancyRate %>%</small>
+                            </div>
+                          </td>
+                          <td class="px-4 py-3 text-center">
+                            <div class="btn-group" role="group">
+                              <a href="/shelters/edit/<%= shelter.shelter_id %>"
+                                 class="btn btn-sm btn-outline-primary" title="Edit">
+                                <i class="fas fa-edit"></i>
+                              </a>
+                              <button type="button" class="btn btn-sm btn-outline-danger"
+                                      onclick="confirmDelete(<%= shelter.shelter_id %>, '<%= shelter.shelter_name %>')"
+                                      title="Delete">
+                                <i class="fas fa-trash"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      <% }); %>
+                    <% } else { %>
+                      <tr>
+                        <td colspan="6" class="text-center py-5">
+                          <div class="text-muted">
+                            <i class="fas fa-building fa-3x mb-3"></i>
+                            <p class="mb-0">No shelters found.</p>
+                            <a href="/shelters/add" class="btn btn-success btn-sm mt-2">
+                              <i class="fas fa-plus me-1"></i>Add First Shelter
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <% if (shelters && shelters.length > 0) { %>
+            <nav aria-label="Shelters pagination" class="mt-4">
+              <ul class="pagination justify-content-center">
+                <li class="page-item <%= currentPage <= 1 ? 'disabled' : '' %>">
+                  <a class="page-link" href="?page=<%= currentPage - 1 %><%= search ? '&search=' + search : '' %>">
+                    <i class="fas fa-chevron-left"></i> Previous
+                  </a>
+                </li>
+                <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
+                  <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                    <a class="page-link" href="?page=<%= i %><%= search ? '&search=' + search : '' %>"><%= i %></a>
+                  </li>
+                <% } %>
+                <li class="page-item <%= currentPage >= totalPages ? 'disabled' : '' %>">
+                  <a class="page-link" href="?page=<%= currentPage + 1 %><%= search ? '&search=' + search : '' %>">
+                    Next <i class="fas fa-chevron-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function confirmDelete(id, name) {
+        if (confirm(`Are you sure you want to delete shelter "${name}"? This action cannot be undone.`)) {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = `/shelters/delete/${id}`;
+          document.body.appendChild(form);
+          form.submit();
+        }
+      }
+    </script>
+  </body>
+</html>

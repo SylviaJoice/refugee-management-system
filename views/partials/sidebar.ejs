@@ -1,0 +1,32 @@
+<aside class="sidebar bg-light shadow-sm" style="min-height: calc(100vh - 76px); width: 250px;">
+  <nav class="nav flex-column py-3">
+    <a class="nav-link py-3 px-4 text-dark fw-semibold <%= title === 'Dashboard' ? 'bg-primary text-white rounded' : '' %>" href="/dashboard">
+      <i class="fas fa-tachometer-alt me-3"></i>
+      <span>Dashboard</span>
+    </a>
+    <a class="nav-link py-3 px-4 text-dark fw-semibold <%= title && title.includes('Refugee') ? 'bg-primary text-white rounded' : '' %>" href="/refugees">
+      <i class="fas fa-users me-3"></i>
+      <span>Refugees</span>
+    </a>
+    <a class="nav-link py-3 px-4 text-dark fw-semibold <%= title && title.includes('Shelter') ? 'bg-primary text-white rounded' : '' %>" href="/shelters">
+      <i class="fas fa-building me-3"></i>
+      <span>Shelters</span>
+    </a>
+    <a class="nav-link py-3 px-4 text-dark fw-semibold <%= title && title.includes('Family') ? 'bg-primary text-white rounded' : '' %>" href="/family">
+      <i class="fas fa-user-friends me-3"></i>
+      <span>Family Members</span>
+    </a>
+    <a class="nav-link py-3 px-4 text-dark fw-semibold <%= title && title.includes('Aid') ? 'bg-primary text-white rounded' : '' %>" href="/aid">
+      <i class="fas fa-hand-holding-heart me-3"></i>
+      <span>Aid Distribution</span>
+    </a>
+    <a class="nav-link py-3 px-4 text-dark fw-semibold <%= title && title.includes('Medical') ? 'bg-primary text-white rounded' : '' %>" href="/medical">
+      <i class="fas fa-stethoscope me-3"></i>
+      <span>Medical Records</span>
+    </a>
+    <a class="nav-link py-3 px-4 text-dark fw-semibold <%= title && title.includes('Complaint') ? 'bg-primary text-white rounded' : '' %>" href="/complaints">
+      <i class="fas fa-exclamation-triangle me-3"></i>
+      <span>Complaints</span>
+    </a>
+  </nav>
+</aside>

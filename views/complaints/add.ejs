@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('../partials/header') %>
+    <div class="app-body">
+      <%- include('../partials/sidebar') %>
+      <main class="content p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h1>Add Complaint</h1>
+          <a href="/complaints" class="btn btn-outline-secondary">Back</a>
+        </div>
+        <%- include('../partials/messages') %>
+        <div class="card shadow-sm p-4">
+          <form action="/complaints/add" method="post" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Refugee</label>
+                <select name="refugee_id" class="form-select" required>
+                  <option value="">Select refugee</option>
+                  <% refugees.forEach((refugee) => { %>
+                    <option value="<%= refugee.refugee_id %>"><%= refugee.full_name %></option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Complaint Title</label>
+                <input type="text" name="complaint_title" class="form-control" required />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea name="complaint_description" class="form-control" rows="4" required></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Status</label>
+                <select name="complaint_status" class="form-select" required>
+                  <option value="Pending">Pending</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+              <div class="col-12 text-end">
+                <button type="submit" class="btn btn-primary">Create Complaint</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+    <%- include('../partials/footer') %>
+  </body>
+</html>
