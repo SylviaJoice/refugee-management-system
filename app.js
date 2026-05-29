@@ -52,9 +52,7 @@ app.use('/aid', aidRoutes);
 app.use('/medical', medicalRoutes);
 app.use('/complaints', complaintRoutes);
 
-app.use((req, res) => {
-  res.status(404).render('404', { title: 'Page Not Found' });
-});
+
 
 const PORT = process.env.PORT || 3000;
 app.post('/chatbot', async (req, res) => {
@@ -80,6 +78,9 @@ Rules:
 - If user asks for actual refugee data, tell them to use the website tables.
 - Keep answers short and beginner-friendly.
 `;
+app.use((req, res) => {
+  res.status(404).render('404', { title: 'Page Not Found' });
+});
 
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
