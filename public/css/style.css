@@ -106,3 +106,12 @@ header.topbar h5 {
 #chatbot-send {
   margin-left: 5px;
 }
+#chatbot-box {
+  color: #222;
+}
+
+#chatbot-messages div {
+  color: #222;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
